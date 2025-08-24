@@ -69,7 +69,7 @@ func _physics_process(delta):
 		else:
 			speed_current = speed_walking # and back to walking 
 
-	
+		print("new")
 
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor(): # checks if jump = pressed and is on floor
