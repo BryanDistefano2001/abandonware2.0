@@ -61,7 +61,7 @@ func _physics_process(delta):
 		standing_collision_shape.disabled = true   # standing = true
 		crouching_collision_shape.disabled = false # crouching = false
 	elif !crouch_ray_cast.is_colliding():
-		standing_collision_shape.disabled = false # standing = fase
+		standing_collision_shape.disabled = false # standing = false
 		crouching_collision_shape.disabled = true # crouching = true
 		pivot.position.y = lerp(pivot.position.y, 1.0, delta * crouch_lerp_speed) # stands character up
 		if Input.is_action_pressed("sprint"): 
@@ -69,25 +69,25 @@ func _physics_process(delta):
 		else:
 			speed_current = speed_walking # and back to walking 
 
-		print("new")
-
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor(): # checks if jump = pressed and is on floor
+	if Input.is_action_just_pressed("jump") and is_on_floor(): # checks if jump is pressed and is on floor
 		velocity.y = jump_velocity # velocity gets jump power
 		
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "forward", "backwards")
 	#direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	direction = lerp(direction,(transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(), delta * lerp_speed)
-	# direction = 
+	direction = lerp(direction,(transform.basis * Vector3(input_dir.x, 0.0, input_dir.y)).normalized(), delta * lerp_speed)
+	
+	print("direction + ", direction)
 	
 	if direction:
-		velocity.x = direction.x * speed_current 
+		velocity.x = direction.x * speed_current
 		velocity.z = direction.z * speed_current
 		
 	else:
-		velocity.x = move_toward(velocity.x, 0, speed_current)
-		velocity.z = move_toward(velocity.z, 0, speed_current)
+		velocity.x = move_toward(velocity.x, 0, .8)
+		velocity.z = move_toward(velocity.z, 0, .8)
+		
 
-	print("el")
+	
 	move_and_slide()
