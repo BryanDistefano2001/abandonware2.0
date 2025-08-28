@@ -7,10 +7,10 @@ extends CharacterBody3D
 @onready var pivot = $pivot
 @onready var standing_collision_shape = %standing_collision_shape
 @onready var crouching_collision_shape = %crouching_collision_shape
-@onready var jump_crouch_collision_shape = %jump_crouch_collision_shape
 @onready var crouch_ray_cast = $crouch_ray_cast
 @onready var mouse_visible := true
 @onready var jump_buffer_timer = %jump_buffer_timer
+
 
 
 # player variables
@@ -58,15 +58,14 @@ func _physics_process(delta):
 
 
 	# handles crouching and sprinting logic
-	if Input.is_action_pressed("crouch") and is_on_floor():
+	if Input.is_action_pressed("crouch"):
 		speed_current = speed_crouching # sets current speed to crouching sped
 		pivot.position.y = lerp(pivot.position.y, 1.0 + crouching_depth, delta * crouch_lerp_speed) # crouches character with a lerp
 		standing_collision_shape.disabled = true   # standing = true
 		crouching_collision_shape.disabled = false # crouching = false
-	
 	elif !crouch_ray_cast.is_colliding():
-		standing_collision_shape.disabled = false # standing = true
-		crouching_collision_shape.disabled = true # crouching = false
+		standing_collision_shape.disabled = false # standing = false
+		crouching_collision_shape.disabled = true # crouching = true
 		pivot.position.y = lerp(pivot.position.y, 1.0, delta * crouch_lerp_speed) # stands character up
 		if Input.is_action_pressed("sprint"): 
 			speed_current = speed_sprinting # obv changes speed to sprint speed
@@ -84,14 +83,18 @@ func _physics_process(delta):
 	var input_dir = Input.get_vector("left", "right", "forward", "backwards")
 	#direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	direction = lerp(direction,(transform.basis * Vector3(input_dir.x, 0.0, input_dir.y)).normalized(), delta * lerp_speed)
-	
-	
-	
 		
+	
+	print("direction + ", direction)
+	
 	if direction:
 		velocity.x = direction.x * speed_current
 		velocity.z = direction.z * speed_current
-	
+		
+	else:
+		velocity.x = move_toward(velocity.x, 0, .8)
+		velocity.z = move_toward(velocity.z, 0, .8)
+		
 
 	
 	move_and_slide()
