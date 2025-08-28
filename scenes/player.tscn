@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cyk6svblrkgqt"]
+[gd_scene load_steps=8 format=3 uid="uid://cyk6svblrkgqt"]
 
 [ext_resource type="Script" uid="uid://f4ky0iela780" path="res://scripts/player.gd" id="1_3vyb7"]
 [ext_resource type="Texture2D" uid="uid://cuabitbcii5ha" path="res://assets/textures/dev/grids/Orange/texture_05.png" id="2_g2els"]
+[ext_resource type="Script" uid="uid://cinu2edvnp7b7" path="res://scenes/pivot_handler.gd" id="2_qhqgy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g2els"]
 
@@ -38,11 +39,15 @@ shape = SubResource("CapsuleShape3D_qhqgy")
 disabled = true
 debug_fill = false
 
-[node name="pivot" type="Node3D" parent="."]
+[node name="pivot_handler" type="Node3D" parent="."]
+script = ExtResource("2_qhqgy")
+
+[node name="pivot" type="Node3D" parent="pivot_handler"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
-[node name="Camera3D" type="Camera3D" parent="pivot"]
+[node name="Camera3D" type="Camera3D" parent="pivot_handler"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

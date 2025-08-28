@@ -27,29 +27,6 @@ var direction := Vector3.ZERO
 var crouching_depth = -0.5
 
 
-func _ready():
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
-func _input(event):
-	
-	# handles mouse movement
-	
-	if event is InputEventMouseMotion and !mouse_visible:
-		rotate_y(deg_to_rad(-event.relative.x * mouse_sens))
-		pivot.rotate_x(deg_to_rad(-event.relative.y * mouse_sens))
-		pivot.rotation.x = clamp(pivot.rotation.x, deg_to_rad(-89), deg_to_rad(89))
-		
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and not Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	elif Input.is_action_just_pressed("escape") and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	elif Input.is_action_just_pressed("escape") and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-		mouse_visible = true
-	else:
-		mouse_visible = false
 		
 func _physics_process(delta):
 	# Add the gravity.
@@ -66,7 +43,7 @@ func _physics_process(delta):
 	elif !crouch_ray_cast.is_colliding():
 		standing_collision_shape.disabled = false # standing = false
 		crouching_collision_shape.disabled = true # crouching = true
-		pivot.position.y = lerp(pivot.position.y, 1.0, delta * crouch_lerp_speed) # stands character up
+		self.position.y = lerp(self.position.y, 1.0, delta * crouch_lerp_speed) # stands character up
 		if Input.is_action_pressed("sprint"): 
 			speed_current = speed_sprinting # obv changes speed to sprint speed
 		else:
@@ -85,7 +62,7 @@ func _physics_process(delta):
 	direction = lerp(direction,(transform.basis * Vector3(input_dir.x, 0.0, input_dir.y)).normalized(), delta * lerp_speed)
 		
 	
-	print("direction + ", direction)
+	
 	
 	if direction:
 		velocity.x = direction.x * speed_current
