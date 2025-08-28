@@ -39,9 +39,12 @@ shape = SubResource("CapsuleShape3D_qhqgy")
 disabled = true
 debug_fill = false
 
+<<<<<<< HEAD
 [node name="pivot_handler" type="Node3D" parent="."]
 script = ExtResource("2_qhqgy")
 
+=======
+>>>>>>> parent of 1371abe (version 1.01)
 [node name="pivot" type="Node3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
@@ -54,7 +57,10 @@ mesh = SubResource("CapsuleMesh_3vyb7")
 
 [node name="crouch_ray_cast" type="RayCast3D" parent="."]
 target_position = Vector3(0, 2, 0)
+<<<<<<< HEAD
 
 [node name="jump_buffer_timer" type="Timer" parent="."]
 unique_name_in_owner = true
 wait_time = 0.1
+=======
+>>>>>>> parent of 1371abe (version 1.01)

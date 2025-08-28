@@ -9,8 +9,6 @@ extends CharacterBody3D
 @onready var crouching_collision_shape = %crouching_collision_shape
 @onready var crouch_ray_cast = $crouch_ray_cast
 @onready var mouse_visible := true
-@onready var jump_buffer_timer = %jump_buffer_timer
-
 
 
 # player variables
@@ -43,7 +41,11 @@ func _physics_process(delta):
 	elif !crouch_ray_cast.is_colliding():
 		standing_collision_shape.disabled = false # standing = false
 		crouching_collision_shape.disabled = true # crouching = true
+<<<<<<< HEAD
 		self.position.y = lerp(self.position.y, 1.0, delta * crouch_lerp_speed) # stands character up
+=======
+		pivot.position.y = lerp(pivot.position.y, 1.0, delta * crouch_lerp_speed) # stands character up
+>>>>>>> parent of 1371abe (version 1.01)
 		if Input.is_action_pressed("sprint"): 
 			speed_current = speed_sprinting # obv changes speed to sprint speed
 		else:
@@ -52,17 +54,19 @@ func _physics_process(delta):
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor(): # checks if jump is pressed and is on floor
 		velocity.y = jump_velocity # velocity gets jump power
-		jump_buffer_timer.start()
-	if Input.is_action_just_pressed("crouch") and ! is_on_floor() and ! jump_buffer_timer.is_stopped():
-		velocity.y += 1
 		
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "forward", "backwards")
 	#direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	direction = lerp(direction,(transform.basis * Vector3(input_dir.x, 0.0, input_dir.y)).normalized(), delta * lerp_speed)
+<<<<<<< HEAD
 		
 	
 	
+=======
+	
+	print("direction + ", direction)
+>>>>>>> parent of 1371abe (version 1.01)
 	
 	if direction:
 		velocity.x = direction.x * speed_current
