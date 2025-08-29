@@ -54,5 +54,5 @@ target_position = Vector3(0, 2, 0)
 
 [node name="jump_buffer_timer" type="Timer" parent="."]
 unique_name_in_owner = true
-wait_time = 0.1
+wait_time = 0.05
 one_shot = true
