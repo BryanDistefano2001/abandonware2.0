@@ -75,6 +75,7 @@ func _physics_process(delta):
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor(): # checks if jump is pressed and is on floor
 		velocity.y = jump_velocity # velocity gets jump power
+		jump_buffer_timer.start()
 	elif Input.is_action_just_pressed("crouch") and ! is_on_floor() and ! jump_buffer_timer.is_stopped():
 		velocity.y += 3
 	# Get the input direction and handle the movement/deceleration.
@@ -95,7 +96,3 @@ func _physics_process(delta):
 
 	
 	move_and_slide()
-
-
-func _on_jump_buffer_timer_timeout():
-	jump_buffer_timer.stop()
