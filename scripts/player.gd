@@ -7,6 +7,8 @@ extends CharacterBody3D
 @onready var pivot = $pivot
 @onready var standing_collision_shape = %standing_collision_shape
 @onready var crouching_collision_shape = %crouching_collision_shape
+@onready var standing_mesh = %standing_mesh
+@onready var crouching_mesh = %crouching_mesh
 @onready var crouch_ray_cast = $crouch_ray_cast
 @onready var mouse_visible := true
 @onready var jump_buffer_timer = %jump_buffer_timer
@@ -63,10 +65,14 @@ func _physics_process(delta):
 		pivot.position.y = lerp(pivot.position.y, 1.0 + crouching_depth, delta * crouch_lerp_speed) # crouches character with a lerp
 		standing_collision_shape.disabled = true   # standing = true
 		crouching_collision_shape.disabled = false # crouching = false
+		standing_mesh.visible = false   # standing = false
+		crouching_mesh.visible = true 	# crouching = true
 	elif !crouch_ray_cast.is_colliding():
 		standing_collision_shape.disabled = false # standing = false
 		crouching_collision_shape.disabled = true # crouching = true
 		pivot.position.y = lerp(pivot.position.y, 1.0, delta * crouch_lerp_speed) # stands character up
+		standing_mesh.visible= true # standing = false
+		crouching_mesh.visible = false # crouching = true
 		if Input.is_action_pressed("sprint"): 
 			speed_current = speed_sprinting # obv changes speed to sprint speed
 		else:
@@ -77,7 +83,8 @@ func _physics_process(delta):
 		velocity.y = jump_velocity # velocity gets jump power
 		jump_buffer_timer.start()
 	elif Input.is_action_just_pressed("crouch") and ! is_on_floor() and ! jump_buffer_timer.is_stopped():
-		velocity.y += 3
+		velocity.y += 30
+		
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "forward", "backwards")
 	#direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
