@@ -55,12 +55,9 @@ func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta * gravity_sens
-	if not is_on_floor() and jump_buffer_timer.is_stopped(): 
-		jump_buffer_timer.start()
-		print(jump_buffer_timer)
-	if is_on_floor():
-		jump_buffer_timer.start()
-	# handles crouching and sprinting logic
+		
+	
+		
 	if Input.is_action_pressed("crouch"):
 		speed_current = speed_crouching # sets current speed to crouching sped
 		pivot.position.y = lerp(pivot.position.y, 1.0 + crouching_depth, delta * crouch_lerp_speed) # crouches character with a lerp
@@ -98,3 +95,7 @@ func _physics_process(delta):
 
 	
 	move_and_slide()
+
+
+func _on_jump_buffer_timer_timeout():
+	jump_buffer_timer.stop()
