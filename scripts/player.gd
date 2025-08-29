@@ -9,6 +9,9 @@ extends CharacterBody3D
 @onready var crouching_collision_shape = %crouching_collision_shape
 @onready var crouch_ray_cast = $crouch_ray_cast
 @onready var mouse_visible := true
+@onready var jump_buffer_timer = %jump_buffer_timer
+
+
 
 # player variables
 @export var jump_velocity : float
@@ -52,6 +55,7 @@ func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta * gravity_sens
+		jump_buffer_timer.start()
 
 
 	# handles crouching and sprinting logic
@@ -72,7 +76,8 @@ func _physics_process(delta):
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor(): # checks if jump is pressed and is on floor
 		velocity.y = jump_velocity # velocity gets jump power
-		
+	elif Input.is_action_just_pressed("crouch") and ! is_on_floor() and ! jump_buffer_timer.is_stopped():
+		velocity.y += 3
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "forward", "backwards")
 	#direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
