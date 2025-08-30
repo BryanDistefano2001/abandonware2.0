@@ -24,6 +24,7 @@ extends CharacterBody3D
 @export var mouse_sens : float
 @export var lerp_speed : float
 @export var crouch_lerp_speed : float
+@export var crouch_jump_power : float
 
 var direction := Vector3.ZERO
 var crouching_depth = -0.5
@@ -83,7 +84,7 @@ func _physics_process(delta):
 		velocity.y = jump_velocity # velocity gets jump power
 		jump_buffer_timer.start()
 	elif Input.is_action_just_pressed("crouch") and ! is_on_floor() and ! jump_buffer_timer.is_stopped():
-		velocity.y += 30
+		velocity.y += crouch_jump_power
 		
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "forward", "backwards")
